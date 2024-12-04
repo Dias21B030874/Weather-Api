@@ -3,6 +3,7 @@
 ## Описание
 
 FastAPI приложение для работы с погодными данными с интеграцией внешнего API OpenWeatherMap. Включает JWT авторизацию, CRUD операции и деплой на бесплатный хостинг.
+https://weather-api-production-072b.up.railway.app/docs
 
 ## Функционал
 
