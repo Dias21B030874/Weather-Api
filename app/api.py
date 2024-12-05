@@ -1,13 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from app.routers import auth, cities, weather
 
-app = FastAPI(
-    title="Weather API",
-    description="API для работы с погодными данными.",
-    version="1.0.0",
-)
+api_router = APIRouter()
 
 # Подключаем маршруты
-app.include_router(auth.router)
-app.include_router(cities.router)
-app.include_router(weather.router)
+api_router.include_router(auth.router)
+api_router.include_router(cities.router)
+api_router.include_router(weather.router)

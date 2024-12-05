@@ -2,7 +2,6 @@ import httpx
 from typing import Any, Dict, Optional
 import os
 
-# Получение API ключа из переменных окружения
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 if not OPENWEATHER_API_KEY:
     raise ValueError("OPENWEATHER_API_KEY не установлен в переменных окружения")
@@ -24,11 +23,22 @@ async def get_weather(city_name: str, units: str = "metric") -> Optional[Dict[st
         "appid": OPENWEATHER_API_KEY,
         "units": units
     }
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"{BASE_URL}/weather", params=params)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 404:
-            return None
-        else:
-            response.raise_for_status()
+
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"{BASE_URL}/weather", params=params)
+            response.raise_for_status()  # выбрасывает исключение при 4xx или 5xx ошибках
+
+            if response.status_code == 200:
+                return response.json()
+            else:
+                print(f"Неизвестный статус ответа: {response.status_code}")
+                return None
+
+    except httpx.RequestError as e:
+        print(f"Ошибка при запросе: {e}")
+    except httpx.HTTPStatusError as e:
+        print(f"Ошибка HTTP: {e}")
+    except Exception as e:
+        print(f"Неизвестная ошибка: {e}")
+    return None

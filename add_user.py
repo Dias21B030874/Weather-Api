@@ -5,7 +5,7 @@ from app.models import User
 
 db: Session = SessionLocal()
 
-username = "user"
+username = "user1"
 password = "password"
 
 hashed_password = get_password_hash(password)
